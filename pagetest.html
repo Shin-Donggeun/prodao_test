@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Concept</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+
+  :root {
+    color-scheme: dark;
+    --section-gap: clamp(14vh, 20vh, 26vh);
+    --section-radius: 20px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    color: #0f172a;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+    background: #01020a;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(140% 140% at 10% 10%, #0b1026 0%, #050816 40%, #01020a 75%, #000000 100%),
+      radial-gradient(120% 100% at 85% 20%, rgba(24, 49, 126, 0.42), transparent 70%),
+      radial-gradient(110% 90% at 18% 78%, rgba(26, 87, 168, 0.32), transparent 70%),
+      radial-gradient(1px 1px at 25% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
+      radial-gradient(1px 1px at 70% 20%, rgba(255, 255, 255, 0.35), transparent 50%),
+      radial-gradient(1px 1px at 40% 80%, rgba(255, 255, 255, 0.5), transparent 50%),
+      radial-gradient(1px 1px at 80% 65%, rgba(255, 255, 255, 0.4), transparent 55%);
+    background-size: cover, 620px 620px, 520px 520px, 280px 280px, 320px 320px, 380px 380px, 360px 360px;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat;
+    filter: saturate(1.25) brightness(0.98);
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-repeat: repeat;
+    background-size: 720px 720px, 820px 820px;
+    mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.95) 65%, rgba(0,0,0,1) 100%);
+  }
+
+  .stars-back {
+    background-image:
+      radial-gradient(5.2px 5.2px at 12% 18%, rgba(255,255,255,0.25), transparent 55%),
+      radial-gradient(5.2px 5.2px at 34% 12%, rgba(255,255,255,0.22), transparent 55%),
+      radial-gradient(5.2px 5.2px at 56% 32%, rgba(255,255,255,0.24), transparent 55%),
+      radial-gradient(5.2px 5.2px at 78% 26%, rgba(255,255,255,0.2), transparent 55%),
+      radial-gradient(5.2px 5.2px at 22% 68%, rgba(255,255,255,0.24), transparent 55%),
+      radial-gradient(5.2px 5.2px at 46% 78%, rgba(255,255,255,0.22), transparent 55%),
+      radial-gradient(5.2px 5.2px at 70% 62%, rgba(255,255,255,0.23), transparent 55%),
+      radial-gradient(5.2px 5.2px at 88% 82%, rgba(255,255,255,0.21), transparent 55%);
+    opacity: 0.54;
+    animation: starDriftBack 3090s ease-in-out infinite;
+  }
+
+  .stars-mid {
+    background-image:
+      radial-gradient(6.4px 6.4px at 9% 18%, rgba(255,255,255,0.36), transparent 55%),
+      radial-gradient(6.8px 6.8px at 33% 12%, rgba(255,255,255,0.32), transparent 55%),
+      radial-gradient(6.6px 6.6px at 52% 32%, rgba(255,255,255,0.38), transparent 55%),
+      radial-gradient(6.4px 6.4px at 78% 22%, rgba(255,255,255,0.34), transparent 55%),
+      radial-gradient(6.6px 6.6px at 18% 70%, rgba(255,255,255,0.36), transparent 55%),
+      radial-gradient(6.8px 6.8px at 42% 82%, rgba(255,255,255,0.34), transparent 55%),
+      radial-gradient(6.6px 6.6px at 68% 60%, rgba(255,255,255,0.36), transparent 55%),
+      radial-gradient(6.4px 6.4px at 88% 80%, rgba(255,255,255,0.32), transparent 55%);
+    opacity: 0.62;
+    animation: starDriftMid 3090s ease-in-out infinite, starTwinkleMid 39s ease-in-out infinite;
+  }
+
+  .stars-front {
+    background-image:
+      radial-gradient(5.9px 5.9px at 18% 26%, rgba(255,255,255,0.5), transparent 55%),
+      radial-gradient(6.2px 6.2px at 44% 18%, rgba(255,255,255,0.44), transparent 55%),
+      radial-gradient(6.0px 6.0px at 62% 44%, rgba(255,255,255,0.48), transparent 55%),
+      radial-gradient(5.9px 5.9px at 82% 36%, rgba(255,255,255,0.46), transparent 55%),
+      radial-gradient(5.9px 5.9px at 26% 76%, rgba(255,255,255,0.48), transparent 55%),
+      radial-gradient(6.2px 6.2px at 50% 86%, rgba(255,255,255,0.42), transparent 55%),
+      radial-gradient(5.9px 5.9px at 74% 68%, rgba(255,255,255,0.46), transparent 55%),
+      radial-gradient(6.0px 6.0px at 90% 88%, rgba(255,255,255,0.4), transparent 55%);
+    opacity: 0.7;
+    animation: starDriftFront 3090s ease-in-out infinite, starTwinkleFront 33s ease-in-out infinite;
+  }
+
+  .nebula {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(82vw, 1400px);
+    height: min(82vw, 1400px);
+    transform: translate(-50%, -50%);
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(254, 114, 19, 0.22) 0%, rgba(254, 114, 19, 0.14) 18%, transparent 45%),
+      radial-gradient(ellipse at 42% 56%, rgba(133, 151, 255, 0.16) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 44%, rgba(217, 162, 255, 0.14) 0%, transparent 62%),
+      radial-gradient(ellipse at 50% 50%, rgba(255, 195, 141, 0.2) 0%, rgba(255, 195, 141, 0.1) 35%, transparent 70%),
+      radial-gradient(ellipse at 55% 52%, rgba(135, 216, 248, 0.12) 0%, transparent 70%);
+    filter: blur(20px) saturate(0.95);
+    opacity: 0.82;
+    z-index: 0;
+    pointer-events: none;
+    animation: nebulaPulse 3060s ease-in-out infinite;
+  }
+
+  .nebula::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.18) 25%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .planet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(18vw, 320px);
+    height: min(18vw, 320px);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 28%, rgba(134, 200, 255, 0.42) 0%, rgba(134, 200, 255, 0.0) 48%),
+      radial-gradient(circle at 72% 68%, rgba(10, 14, 45, 0.65) 0%, rgba(10, 14, 45, 0.0) 60%),
+      radial-gradient(circle at 55% 55%, rgba(125, 105, 220, 0.08) 0%, rgba(125, 105, 220, 0.03) 45%, rgba(0, 0, 0, 0.25) 85%),
+      radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.42) 58%, rgba(0, 0, 0, 0.52) 85%, rgba(0, 0, 0, 0.56) 100%),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.018) 55%, transparent 75%),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.012) 0, rgba(255, 255, 255, 0.012) 1px, transparent 3px);
+    background-blend-mode: screen, normal, normal, multiply, screen, overlay;
+    box-shadow:
+      0 0 0 2px rgba(254, 114, 19, 0.32),
+      0 0 32px rgba(254, 114, 19, 0.24);
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+    animation: planetDrift 240s ease-in-out infinite alternate;
+  }
+
+  .planet::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.25), transparent 55%),
+                radial-gradient(circle at 68% 72%, rgba(0, 0, 0, 0.35), transparent 60%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .orbit {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(72vw, 1300px);
+    height: min(40vw, 720px);
+    transform: translate(-50%, -50%) rotate(12deg);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    opacity: 0.22;
+    z-index: 1;
+    pointer-events: none;
+    animation: orbitSpin1 60s linear infinite;
+  }
+
+  .orbit-2 {
+    width: min(64vw, 1100px);
+    height: min(34vw, 600px);
+    transform: translate(-50%, -50%) rotate(-18deg);
+    opacity: 0.2;
+    border-color: rgba(255, 255, 255, 0.22);
+    animation: orbitSpin2 90s linear infinite;
+  }
+
+  .orbit::after,
+  .orbit-2::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 10deg,
+      transparent 0deg 120deg,
+      rgba(255, 255, 255, 0.42) 120deg 138deg,
+      transparent 138deg 248deg,
+      rgba(255, 255, 255, 0.35) 248deg 266deg,
+      transparent 266deg 360deg
+    );
+    -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 1px), #000 calc(100% - 0px));
+    mask: radial-gradient(closest-side, transparent calc(100% - 1px), #000 calc(100% - 0px));
+    pointer-events: none;
+  }
+
+  @keyframes nebulaPulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.82; }
+    50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.82; }
+  }
+
+  @keyframes orbitSpin1 {
+    from { transform: translate(-50%, -50%) rotate(12deg); }
+    to { transform: translate(-50%, -50%) rotate(372deg); }
+  }
+
+  @keyframes orbitSpin2 {
+    from { transform: translate(-50%, -50%) rotate(-18deg); }
+    to { transform: translate(-50%, -50%) rotate(342deg); }
+  }
+
+  @keyframes starDriftBack {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-1600px, 1600px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes starDriftMid {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(1600px, -1600px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes starDriftFront {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-1600px, -1600px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes starTwinkleMid {
+    0% { opacity: 0.38; }
+    50% { opacity: 0.85; }
+    100% { opacity: 0.38; }
+  }
+
+  @keyframes starTwinkleFront {
+    0% { opacity: 0.52; }
+    50% { opacity: 0.95; }
+    100% { opacity: 0.52; }
+  }
+
+  @keyframes planetDrift {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.004); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nebula { animation: none; opacity: 0.9; }
+    .orbit, .orbit-2 { animation: none; }
+    .planet { animation: none; }
+    .stars { animation: none; }
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.84; }
+    45% { opacity: 0.98; }
+    70% { opacity: 0.9; }
+    100% { opacity: 0.86; }
+  }
+
+  main {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
+    padding: clamp(8vh, 10vh, 12vh) 5vw clamp(20vh, 24vh, 30vh);
+  }
+
+  section {
+    width: min(83.333vw, 1800px);
+    min-height: 200vh;
+    margin: 0 auto;
+    background: #f8f8f8;
+    border-radius: var(--section-radius);
+    box-shadow:
+      0 25px 70px rgba(0, 0, 0, 0.32),
+      0 6px 18px rgba(0, 0, 0, 0.2);
+    padding: clamp(32px, 6vw, 72px);
+    display: grid;
+    align-content: start;
+    gap: 24px;
+    position: relative;
+  }
+
+  section:first-of-type {
+    background: transparent;
+    box-shadow: none;
+    color: #f8fbff;
+    min-height: 100vh;
+    height: 100vh;
+  }
+
+  section:first-of-type h1 { color: #f8fbff; }
+  section:first-of-type h2 { color: #eef2ff; }
+  section:first-of-type p { color: #e5e7eb; }
+  section:first-of-type .tagline { color: #e0e7ff; }
+  section:first-of-type .accent { background: linear-gradient(90deg, #dff5ff, #b3c7ff 50%, #e7ddff); }
+  section:first-of-type .cta {
+    background: rgba(255, 255, 255, 0.12);
+    color: #f8fbff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45);
+  }
+  section:first-of-type .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  section:nth-of-type(2) {
+    margin-top: calc(-1 * var(--section-gap));
+  }
+
+  section:nth-of-type(3) {
+    background: linear-gradient(135deg, #e8f0ff 0%, #d8e4ff 35%, #c7f0ff 65%, #e9ddff 100%);
+    min-height: 100vh;
+  }
+
+  section:nth-of-type(n+3) {
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.38),
+      0 12px 36px rgba(0, 0, 0, 0.28),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  section:nth-of-type(n+2)::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: calc(var(--section-radius) + 6px);
+    padding: 6px;
+    background: linear-gradient(45deg, rgba(141, 216, 248, 0.5), rgba(122, 155, 255, 0.5) 45%, rgba(192, 162, 255, 0.5));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  h1, h2 {
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    color: #0f172a;
+  }
+
+  h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    color: #111827;
+  }
+
+  p {
+    margin: 0;
+    font-size: clamp(16px, 2.4vw, 18px);
+    line-height: 1.6;
+    color: #1f2937;
+  }
+
+  .tagline {
+    font-size: clamp(18px, 2.8vw, 22px);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #4b5563;
+  }
+
+  .accent {
+    display: inline-block;
+    width: 68px;
+    height: 6px;
+    background: linear-gradient(90deg, #8dd8f8, #7a9bff 45%, #c0a2ff);
+    border-radius: 999px;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #ffffff;
+    text-decoration: none;
+    width: fit-content;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.3);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .cta:not(:first-of-type) {
+    margin-left: 12px;
+  }
+
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.32);
+  }
+</style>
+</head>
+<body>
+<div class="stars stars-back"></div>
+<div class="stars stars-mid"></div>
+<div class="stars stars-front"></div>
+<div class="nebula"></div>
+<div class="planet"></div>
+<div class="orbit orbit-1"></div>
+<div class="orbit orbit-2"></div>
+<main>
+  <section>
+    <div class="accent"></div>
+    <div class="tagline">데이터 주권과 활동 가치 인정을 실현하는 Web3 전문가 은하의 시작</div>
+    <h1>전문가의 모든 활동이 가치로 연결되는 곳</h1>
+    <p>prodao 홈페이지 디자인 컨셉 프로토타입</p>
+    <div style="display:flex; flex-wrap:wrap; gap:12px;">
+      <a class="cta" href="#">Prodao 알아보기</a>
+      <a class="cta" href="#">지금 가입하고 은하 탐험하기</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Prodao란 무엇인가</h2>
+    <p>중앙화된 데이터 경제의 문제와 Prodao 해결책 : 데이터 주권, 공정한 가치 분배</p>
+    <p>핵심 비전 : 데이터 주권 + 활동 가치 인정 + 전문가 커뮤니티/네트워크 성장</p>
+  </section>
+
+  <section>
+    <h2>Build on Prodao</h2>
+    <p>• 기술 기반(핵심 기술)</p>
+    <p>• 메인넷 아키텍처: 탈중앙화, 보안, 확장성, 상호운용성(노드 구조, 데이터 저장)</p>
+    <p>• PoC 합의 알고리즘: 기여도 측정, 블록 생성/검증, 보안</p>
+    <p>• 핵심 시스템: DID, AI 통합, 스마트 컨트랙트 및 DApp</p>
+    <p>• 개발자 리소스: SDK/API/개발도구, 문서/튜토리얼, 스마트 컨트랙트 가이드</p>
+    <p>• PRODAO 위에서 가능한 것: DAO 생성/운영, DApp 개발/배포(DeFi/NFT/GameFi), AI 기반 서비스 연동</p>
+  </section>
+
+  <section>
+    <h2>Participate</h2>
+    <p>• 커뮤니티 참여: 공식 소셜 채널, 온/오프라인 이벤트 및 컨퍼런스 안내</p>
+    <p>• 함께 성장하기: 장학 재단/공익 해커톤, 사회공헌 및 교육 프로젝트, PROD 토큰 기여 방법</p>
+    <p>• 파트너십 참여: 참여신청, Members</p>
+    <p>• 최신 소식/공지, FAQ</p>
+  </section>
+</main>
+</body>
+</html>
